@@ -8,110 +8,46 @@ info:
 security:
   - BearerAuth: []
 paths:
-  /api/v1/teams:
-    x-router-controller: teamsController
+  /api/v1/persons:
+    x-router-controller: personsController
     get:
-      description: Returns all teams
-      operationId: getTeams
+      description: Returns all persons
+      operationId: getPersons
       responses:
         200:
-          description: Team list
+          description: Person list
           content:
             application/json:
               schema:
                 type: array
                 items:
-                  $ref: '#/components/schemas/team'
+                  $ref: '#/components/schemas/person'
         default:
           description: Unexpected error
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/error'
-    post:
-      description: Creates a new team
-      operationId: addTeam
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/team'
-        description: Team to be created
-        required: true
-      responses:
-        201:
-          description: Team
-        default:
-            description: Unexpected error
-            content:
-              application/json:
-                schema:
-                  $ref: '#/components/schemas/error'
                   
-  /api/v1/teams/{id}:
-    x-router-controller: teamsController
+  /api/v1/persons/{province}:
+    x-router-controller: personsController
     get:
-      description: Returns a single team by its id
-      operationId: findByid
+      description: Returns a single person by its province
+      operationId: findByprovince
       parameters:
         - required: true
-          name: id
-          description: id of the team to fetch
+          name: province
+          description: province of the person to fetch
           in: path
           schema:
-            type: number
+            type: string
       responses:
         200:
-          description: Team found by id
+          description: Person found by province
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/team'
-        default:
-          description: Unexpected error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/error'
-    put:
-      description: Update a team based on its id
-      operationId: updateTeam
-      parameters:
-        - required: true
-          name: id
-          description: id of the team to update
-          in: path
-          schema:
-            type: number
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/team'
-        description: Team to be updated
-        required: true
-      responses:
-        '204':
-          description: Team updated
-        default:
-          description: Unexpected error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/error'
-    delete:
-      description: Deletes a single team based on its id
-      operationId: deleteTeam
-      parameters:
-        - required: true
-          name: id
-          description: id of the team to delete
-          in: path
-          schema:
-            type: number
-      responses:
-        '204':
-          description: Team deleted
+                $ref: '#/components/schemas/person'
         default:
           description: Unexpected error
           content:
@@ -126,25 +62,23 @@ components:
       scheme: bearer
       bearerFormat: JWT
   schemas:
-    team:
+    person:
         type: object
         required:
-          - id
+          - province
         properties:
-          id:
+          province:
+            type: string
+          gender:
+            type: string
+          year:
             type: number
-          name:
-            type: string
-          code:
-            type: string
-          country:
-            type: string
-          founded:
+          salaried:
             type: number
-          national:
-            type: boolean
-          logo:
-            type: string
+          average_salary:
+            type: number
+          standard_deviation:
+            type: number
     error:
       type: object
       required:
